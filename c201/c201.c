@@ -174,11 +174,14 @@ void List_DeleteFirst( List *list ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  */
 void List_DeleteAfter( List *list ) {
-    if(list->activeElement == NULL || list->activeElement->nextElement == NULL) {
+    if(list->activeElement == NULL || list->activeElement->nextElement == NULL || list == NULL) {
         return;
     } else {
+        // ulozim si prvek co se ma smazat
         struct ListElement *delNode = list->activeElement->nextElement;
+        //posunu pointer
         list->activeElement->nextElement = delNode->nextElement;
+        //uvolnim misto
         free(delNode);
     }
 }

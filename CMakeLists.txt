@@ -3,11 +3,12 @@ project(IAL C)
 
 set(CMAKE_C_STANDARD 11)
 
-include_directories(c201)
+include_directories(c206)
 
 add_executable(IAL
-        c201/c201-test-utils.c
-        c201/c201-test-utils.h
-        c201/c201-test.c
-        c201/c201.c
-        c201/c201.h)
+        c206/c206-test-utils.c
+        c206/c206-test-utils.h
+        c206/c206-test.c
+        c206/c206.c
+        c206/c206.h
+        )
