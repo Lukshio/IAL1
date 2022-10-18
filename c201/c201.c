@@ -84,9 +84,11 @@ void List_Init( List *list ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  **/
 void List_Dispose( List *list ) {
-    //solved = FALSE
+    //kontrola existence
     if (list != NULL || list->firstElement != NULL) {
         struct ListElement *delNode = list->firstElement;
+
+        //projedu cely list od zacatku do konce postupne uvolnuji dokud nanarazim na konec
         while (delNode != NULL){
             list->firstElement = delNode->nextElement;
             free(delNode);
@@ -94,8 +96,6 @@ void List_Dispose( List *list ) {
         }
         list->firstElement = NULL;
         list->activeElement = NULL;
-    } else {
-        return;
     }
 }
 
@@ -108,15 +108,14 @@ void List_Dispose( List *list ) {
  * @param data Hodnota k vložení na začátek seznamu
  */
 void List_InsertFirst( List *list, int data ) {
-	// solved = FALSE; /* V případě řešení, smažte tento řádek! */
     struct ListElement *lElement = malloc(sizeof(struct ListElement));
     if (list == NULL ||lElement == NULL){
         List_Error();
     } else {
+        // set dat a nastavim jako first
         lElement->data = data;
         lElement->nextElement = list->firstElement;
         list->firstElement = lElement;
-        //list->activeElement = lElement;
     }
 }
 
@@ -156,10 +155,10 @@ void List_DeleteFirst( List *list ) {
     if (list == NULL || list->firstElement == NULL){
         return;
     } else {
-        if (list->firstElement == list->activeElement){
-            list->activeElement = NULL;
+        //pokud je aktivni, odstranim aktivitu
+        if (list->firstElement == list->activeElement) list->activeElement = NULL;
 
-        }
+        //uvolnim a set noveho first prvku
         struct ListElement *tmp = list->firstElement->nextElement;
         free(list->firstElement);
         list->firstElement = tmp;
@@ -196,14 +195,17 @@ void List_DeleteAfter( List *list ) {
  * @param data Hodnota k vložení do seznamu za právě aktivní prvek
  */
 void List_InsertAfter( List *list, int data ) {
+    //kontrola aktivity a listu
     if(list->activeElement == NULL || list == NULL){
         return;
     } else {
         struct ListElement *newNode = malloc(sizeof(struct ListElement));
-        if(list == NULL ||newNode == NULL){
+        //malloc error
+        if(newNode == NULL){
             List_Error();
             return;
         }
+        //set dat, posunu pointery
         newNode->data = data;
         newNode->nextElement = list->activeElement->nextElement;
         list->activeElement->nextElement = newNode;
@@ -218,6 +220,7 @@ void List_InsertAfter( List *list, int data ) {
  * @param dataPtr Ukazatel na cílovou proměnnou
  */
 void List_GetValue( List *list, int *dataPtr ) {
+    // kontrola aktiv. prvku
     if(list->activeElement == NULL){
         List_Error();
         return;
@@ -234,6 +237,7 @@ void List_GetValue( List *list, int *dataPtr ) {
  * @param data Nová hodnota právě aktivního prvku
  */
 void List_SetValue( List *list, int data ) {
+    //kontrola aktiv prvku
     if (list->activeElement == NULL){
         return;
     } else {
@@ -249,6 +253,7 @@ void List_SetValue( List *list, int data ) {
  * @param list Ukazatel na inicializovanou strukturu jednosměrně vázaného seznamu
  */
 void List_Next( List *list ) {
+    //kontrola aktiv prvku
     if(list->activeElement == NULL){
         return;
     } else {
