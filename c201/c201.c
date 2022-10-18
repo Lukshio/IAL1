@@ -110,7 +110,7 @@ void List_Dispose( List *list ) {
 void List_InsertFirst( List *list, int data ) {
 	// solved = FALSE; /* V případě řešení, smažte tento řádek! */
     struct ListElement *lElement = malloc(sizeof(struct ListElement));
-    if (lElement == NULL){
+    if (list == NULL ||lElement == NULL){
         List_Error();
     } else {
         lElement->data = data;
@@ -200,7 +200,7 @@ void List_InsertAfter( List *list, int data ) {
         return;
     } else {
         struct ListElement *newNode = malloc(sizeof(struct ListElement));
-        if(newNode == NULL){
+        if(list == NULL ||newNode == NULL){
             List_Error();
             return;
         }
